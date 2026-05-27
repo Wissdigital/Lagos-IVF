@@ -25,6 +25,23 @@ export default function Contact() {
     setIsSubmitting(true);
     
     try {
+      const generatedId = `MSG-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+      const payload = {
+        id: generatedId,
+        PatientFullName: `${formData.firstName} ${formData.lastName}`,
+        EmailAddress: formData.email,
+        PhoneWhatsApp: formData.phone,
+        SelectedServicePathway: formData.service,
+        DetailedMessage: formData.message,
+        status: 'Pending',
+        timestamp: new Date().toISOString()
+      };
+
+      // Store locally so it acts as real persistent CMS collection for Route A
+      const existing = JSON.parse(localStorage.getItem('lagos_ivf_appointments') || '[]');
+      existing.push(payload);
+      localStorage.setItem('lagos_ivf_appointments', JSON.stringify(existing));
+
       await fetch("https://formsubmit.co/ajax/adeptniyi@gmail.com", {
         method: "POST",
         headers: { 

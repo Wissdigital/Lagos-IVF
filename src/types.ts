@@ -3,7 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type PageId = 'home' | 'about' | 'services' | 'contact' | 'book';
+export type PageId = 'home' | 'about' | 'services' | 'contact' | 'book' | 'blog' | 'admin';
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  author: string;
+  date: string;
+  coverImage: string;
+}
 
 export type ServiceId = 
   | 'sex-selection' 

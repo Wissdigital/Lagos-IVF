@@ -50,6 +50,16 @@ export default function SEOManager({ pageId, currentService }: SEOManagerProps) 
       description = 'Schedule a secure, confidential fertility consultation. Use our live interactive calendar to pick your preferred date, time-slot, and specialist in Lagos.';
       keywords = [...keywords, 'book ivf consultation lagos', 'fertility doctor appointment nigeria', 'schedule semen analysis lagos'];
       canonical = `${baseUrl}/book-appointment`;
+    } else if (pageId === 'blog') {
+      title = 'Lagos Fertility & IVF Knowledge Guide | Lagos IVF Specialist Clinic';
+      description = 'Sovereign medical insights, embryo development guidelines, and clinical procedures authored directly by the elite embryology coordinators of Lagos IVF Specialist Clinic.';
+      keywords = [...keywords, 'fertility news lagos', 'ivf blog nigeria', 'surrogacy guide lagos', 'reproductory medicine journals'];
+      canonical = `${baseUrl}/blog`;
+    } else if (pageId === 'admin') {
+      title = 'Clinical Content Studio Management | Lagos IVF Specialist Clinic';
+      description = 'Secure, authenticated coordinator interface to modify website text and manage medical blog education articles.';
+      keywords = [...keywords];
+      canonical = `${baseUrl}/admin`;
     }
 
     // 2. Apply to HTML Document

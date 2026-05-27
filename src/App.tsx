@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { PageId, ServiceId } from './types';
+import { PageId, ServiceId, BlogPost } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEOManager from './components/SEOManager';
@@ -18,12 +18,41 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
 import BookAppointment from './pages/BookAppointment';
+import Blog from './pages/Blog';
+import Admin from './pages/Admin';
 import { SERVICES_DATA } from './data';
+import { DEFAULT_BLOG_POSTS } from './blogData';
 
 export default function App() {
   const [activePage, setActivePage] = useState<PageId>('home');
   const [activeServiceId, setActiveServiceId] = useState<ServiceId | null>(null);
   const [activeModal, setActiveModal] = useState<'privacy' | 'guidelines' | 'sitemap' | null>(null);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+
+  // Load and synchronize dynamic educational guides state
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('lagos_ivf_blog_posts');
+      if (stored) {
+        setBlogPosts(JSON.parse(stored));
+      } else {
+        localStorage.setItem('lagos_ivf_blog_posts', JSON.stringify(DEFAULT_BLOG_POSTS));
+        setBlogPosts(DEFAULT_BLOG_POSTS);
+      }
+    } catch (e) {
+      setBlogPosts(DEFAULT_BLOG_POSTS);
+    }
+  }, []);
+
+  const handleUpdateBlogPosts = (updatedPosts: BlogPost[]) => {
+    setBlogPosts(updatedPosts);
+    localStorage.setItem('lagos_ivf_blog_posts', JSON.stringify(updatedPosts));
+  };
+
+  const handleResetToDefaults = () => {
+    localStorage.setItem('lagos_ivf_blog_posts', JSON.stringify(DEFAULT_BLOG_POSTS));
+    setBlogPosts(DEFAULT_BLOG_POSTS);
+  };
 
   // Scroll to top upon page navigation trigger
   useEffect(() => {
@@ -90,6 +119,22 @@ export default function App() {
         {activePage === 'book' && (
           <BookAppointment 
             initialServiceId={activeServiceId} 
+          />
+        )}
+
+        {activePage === 'blog' && (
+          <Blog 
+            blogPosts={blogPosts}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {activePage === 'admin' && (
+          <Admin 
+            blogPosts={blogPosts}
+            onUpdateBlogPosts={handleUpdateBlogPosts}
+            onResetToDefaults={handleResetToDefaults}
+            onNavigate={handleNavigate}
           />
         )}
       </main>

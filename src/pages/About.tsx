@@ -3,11 +3,39 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Award, Heart, HelpCircle, Activity, Sparkles, UserCheck, Flame } from 'lucide-react';
 // @ts-ignore
 import labMicroscopeAsset from '../assets/images/embryology_lab_microscope_1779794280073.png';
 
 export default function About() {
+  const [successRate, setSuccessRate] = useState('72%');
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem('lagos_ivf_web_config');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.successRate) {
+            setSuccessRate(parsed.successRate);
+          }
+        } else {
+          setSuccessRate('72%');
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    handleUpdate();
+
+    window.addEventListener('lagos_ivf_web_config_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('lagos_ivf_web_config_updated', handleUpdate);
+    };
+  }, []);
+
   const leadership = [
     {
       name: 'Dr. (Mrs.) Adebisi Adeleke-Ndiolo',
@@ -49,7 +77,7 @@ export default function About() {
   ];
 
   const benchmarks = [
-    { range: 'Under 35 years', rate: '72%', explanation: 'Excellent egg quality, typically leading to robust blastocyst progression.' },
+    { range: 'Under 35 years', rate: successRate, explanation: 'Excellent egg quality, typically leading to robust blastocyst progression.' },
     { range: '35 - 37 years', rate: '64%', explanation: 'Highly responsive to custom stimulation protocols. ICSI recommended for optimal fertilizations.' },
     { range: '38 - 40 years', rate: '48%', explanation: 'Often paired with PGT-A preimplantation testing to screen for viable blastocysts.' },
     { range: '41+ (With Donor Eggs)', rate: '76%', explanation: 'Utilizes exceptional eggs from young donors under 25 years, bypassing age limitations.' }

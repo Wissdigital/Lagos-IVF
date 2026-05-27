@@ -145,6 +145,24 @@ export default function Navbar({ activePage, onNavigate, onNavigateToService }: 
             >
               Contact Us
             </button>
+
+            <button
+              onClick={() => handleRegularPageClick('blog')}
+              className={`text-sm font-semibold tracking-wide transition-colors py-2 cursor-pointer ${
+                activePage === 'blog' ? 'text-orange-600' : 'text-navy-950 hover:text-orange-600'
+              }`}
+            >
+              Blog
+            </button>
+
+            <button
+              onClick={() => handleRegularPageClick('admin')}
+              className={`text-sm font-semibold tracking-wide transition-colors py-2 cursor-pointer ${
+                activePage === 'admin' ? 'text-orange-600' : 'text-navy-950 hover:text-orange-600'
+              }`}
+            >
+              CMS Admin
+            </button>
             
             {/* CTA Button */}
             <button
@@ -225,6 +243,24 @@ export default function Navbar({ activePage, onNavigate, onNavigateToService }: 
             }`}
           >
             Contact Us
+          </button>
+
+          <button
+            onClick={() => handleRegularPageClick('blog')}
+            className={`block w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold tracking-wide cursor-pointer ${
+              activePage === 'blog' ? 'bg-orange-50 text-orange-600' : 'text-navy-950 hover:bg-navy-50'
+            }`}
+          >
+            Blog
+          </button>
+
+          <button
+            onClick={() => handleRegularPageClick('admin')}
+            className={`block w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold tracking-wide cursor-pointer ${
+              activePage === 'admin' ? 'bg-orange-50 text-orange-600' : 'text-navy-950 hover:bg-navy-50'
+            }`}
+          >
+            CMS Admin
           </button>
 
           <button

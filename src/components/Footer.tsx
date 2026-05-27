@@ -109,6 +109,24 @@ export default function Footer({
                   <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
               </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate('blog')} 
+                  className="text-white/80 hover:text-orange-500 font-semibold transition-colors cursor-pointer flex items-center gap-1 group"
+                >
+                  Knowledge Hub &amp; Blog
+                  <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate('admin')} 
+                  className="text-white/80 hover:text-orange-500 font-semibold transition-colors cursor-pointer flex items-center gap-1 group"
+                >
+                  Secure CMS Admin Portal
+                  <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+              </li>
             </ul>
           </div>
 

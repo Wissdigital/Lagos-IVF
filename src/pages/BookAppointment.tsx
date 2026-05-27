@@ -89,6 +89,24 @@ export default function BookAppointment({ initialServiceId }: BookAppointmentPro
     setAppointmentId(generatedId);
 
     try {
+      const payload = {
+        id: generatedId,
+        AppointmentTicketID: generatedId,
+        PatientFullName: formData.fullName,
+        EmailAddress: formData.email,
+        PhoneWhatsApp: formData.phone,
+        SelectedServicePathway: formData.serviceId,
+        ScheduledPeriod: `${months[currentMonth].name} ${selectedDay}, 2026 @ ${selectedTimeSlot}`,
+        ClinicalBriefNotes: formData.notes || "None provided",
+        status: 'Pending',
+        timestamp: new Date().toISOString()
+      };
+
+      // Store locally so it acts as real persistent CMS collection for Route A
+      const existing = JSON.parse(localStorage.getItem('lagos_ivf_appointments') || '[]');
+      existing.push(payload);
+      localStorage.setItem('lagos_ivf_appointments', JSON.stringify(existing));
+
       await fetch("https://formsubmit.co/ajax/adeptniyi@gmail.com", {
         method: "POST",
         headers: { 

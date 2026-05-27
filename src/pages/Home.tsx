@@ -68,7 +68,62 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const autoPlayTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const slideCount = HERO_SLIDES.length;
+  // Dynamic web content edits configuration
+  const [webConfig, setWebConfig] = useState({
+    heroTagline: '#1 Ranked Fertility Clinic in Lagos, Nigeria',
+    heroBtnText: 'Book Live Consultation',
+    successRate: '72%',
+    livingDeliveries: '1,200+',
+    teamExperience: '35+ Yrs',
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem('lagos_ivf_web_config');
+        if (stored) {
+          setWebConfig(JSON.parse(stored));
+        } else {
+          setWebConfig({
+            heroTagline: '#1 Ranked Fertility Clinic in Lagos, Nigeria',
+            heroBtnText: 'Book Live Consultation',
+            successRate: '72%',
+            livingDeliveries: '1,200+',
+            teamExperience: '35+ Yrs',
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    handleUpdate();
+
+    window.addEventListener('lagos_ivf_web_config_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('lagos_ivf_web_config_updated', handleUpdate);
+    };
+  }, []);
+
+  const dynamicHeroSlides = [
+    {
+      ...HERO_SLIDES[0],
+      tagline: webConfig.heroTagline,
+      btnPrimary: webConfig.heroBtnText,
+      statValue: webConfig.successRate,
+    },
+    HERO_SLIDES[1],
+    HERO_SLIDES[2]
+  ];
+
+  const dynamicClinicStats = CLINIC_STATS.map((stat, i) => {
+    if (i === 0) return { ...stat, value: webConfig.successRate };
+    if (i === 1) return { ...stat, value: webConfig.livingDeliveries };
+    if (i === 2) return { ...stat, value: webConfig.teamExperience };
+    return stat;
+  });
+
+  const slideCount = dynamicHeroSlides.length;
 
   const handleNext = () => {
     setDirection(1);
@@ -160,8 +215,8 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
               className="absolute inset-0 w-[114%] h-[114%] -left-[7%] -top-[7%]"
             >
               <img
-                src={HERO_SLIDES[currentSlide].image}
-                alt={HERO_SLIDES[currentSlide].title}
+                src={dynamicHeroSlides[currentSlide].image}
+                alt={dynamicHeroSlides[currentSlide].title}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
               />
@@ -178,7 +233,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
           <div className="max-w-3xl space-y-6 md:space-y-8 pr-4">
             
             {/* Tagline */}
-            <motion.div
+             <motion.div
               key={`tagline-${currentSlide}`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -186,7 +241,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
               className="inline-flex items-center gap-2 rounded-full bg-orange-600/10 border border-orange-500/30 px-4 py-1.5 text-[11px] sm:text-xs font-bold text-orange-400 select-none backdrop-blur-sm"
             >
               <Sparkles className="h-3.5 w-3.5 text-orange-500 animate-pulse" />
-              <span>{HERO_SLIDES[currentSlide].tagline}</span>
+              <span>{dynamicHeroSlides[currentSlide].tagline}</span>
             </motion.div>
 
             {/* Main Title Section */}
@@ -197,7 +252,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight uppercase font-sans"
             >
-              {HERO_SLIDES[currentSlide].title.split(" & ").map((part, idx, arr) => (
+              {dynamicHeroSlides[currentSlide].title.split(" & ").map((part, idx, arr) => (
                 <span key={idx} className="block">
                   {part} {idx < arr.length - 1 && <span className="text-orange-600 font-extrabold">&amp;</span>}
                 </span>
@@ -212,7 +267,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xs sm:text-sm md:text-base text-navy-200 leading-relaxed max-w-2xl font-medium"
             >
-              {HERO_SLIDES[currentSlide].description}
+              {dynamicHeroSlides[currentSlide].description}
             </motion.p>
 
             {/* Actions Box */}
@@ -225,35 +280,35 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
             >
               <button
                 onClick={() => {
-                  const slide = HERO_SLIDES[currentSlide];
+                  const slide = dynamicHeroSlides[currentSlide];
                   onNavigate(slide.btnPrimaryPage as PageId);
                 }}
                 className="flex items-center justify-center gap-2 bg-orange-600 border border-orange-600 hover:bg-orange-500 hover:border-orange-550 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-xl shadow-lg shadow-orange-950/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer select-none"
               >
                 <Calendar className="h-4 w-4" />
-                {HERO_SLIDES[currentSlide].btnPrimary}
+                {dynamicHeroSlides[currentSlide].btnPrimary}
               </button>
 
-              {HERO_SLIDES[currentSlide].btnSecondaryService ? (
+              {dynamicHeroSlides[currentSlide].btnSecondaryService ? (
                 <button
                   onClick={() => {
-                    const slide = HERO_SLIDES[currentSlide];
+                     const slide = dynamicHeroSlides[currentSlide];
                     onNavigateToService(slide.btnSecondaryService as ServiceId);
                   }}
                   className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-xl transition-all duration-300 cursor-pointer select-none backdrop-blur-sm"
                 >
-                  {HERO_SLIDES[currentSlide].btnSecondary}
+                  {dynamicHeroSlides[currentSlide].btnSecondary}
                   <ArrowRight className="h-4 w-4 text-orange-500" />
                 </button>
               ) : (
                 <button
                   onClick={() => {
-                    const slide = HERO_SLIDES[currentSlide];
+                     const slide = dynamicHeroSlides[currentSlide];
                     onNavigate(slide.btnSecondaryPage as PageId);
                   }}
                   className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-xl transition-all duration-300 cursor-pointer select-none backdrop-blur-sm"
                 >
-                  {HERO_SLIDES[currentSlide].btnSecondary}
+                  {dynamicHeroSlides[currentSlide].btnSecondary}
                   <ArrowRight className="h-4 w-4 text-orange-500" />
                 </button>
               )}
@@ -269,11 +324,11 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
             >
               <div className="flex gap-3 items-center">
                 <div className="h-8 w-8 rounded-full bg-orange-600/20 border border-orange-500/20 flex items-center justify-center text-orange-400 font-bold text-xs select-none">
-                  {HERO_SLIDES[currentSlide].statValue}
+                  {dynamicHeroSlides[currentSlide].statValue}
                 </div>
                 <div>
-                  <span className="block text-[11px] font-black text-white uppercase tracking-wider">{HERO_SLIDES[currentSlide].statLabel}</span>
-                  <span className="block text-[10px] text-navy-300/80 font-semibold">{HERO_SLIDES[currentSlide].substat}</span>
+                  <span className="block text-[11px] font-black text-white uppercase tracking-wider">{dynamicHeroSlides[currentSlide].statLabel}</span>
+                  <span className="block text-[10px] text-navy-300/80 font-semibold">{dynamicHeroSlides[currentSlide].substat}</span>
                 </div>
               </div>
 
@@ -311,7 +366,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
 
         {/* Index dash progress selectors */}
         <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center gap-3 select-none">
-          {HERO_SLIDES.map((slide, index) => (
+          {dynamicHeroSlides.map((slide, index) => (
             <button
               key={slide.id}
               onClick={() => {
@@ -355,7 +410,7 @@ export default function Home({ onNavigate, onNavigateToService }: HomeProps) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {CLINIC_STATS.map((stat, i) => (
+            {dynamicClinicStats.map((stat, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 border border-navy-150/50 shadow-sm text-center space-y-2 hover:shadow-md transition-shadow">
                 <span className="text-3xl font-black text-navy-900 block tracking-tight">{stat.value}</span>
                 <span className="text-xs font-bold text-orange-600 block uppercase tracking-wider">{stat.label}</span>
