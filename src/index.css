@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Core Brand Colors mapped strictly to #384B6E (Core Slate Blue) & #2196F3 (Vivid Blue) */
+  
+  /* NAVY classes: mapped to #384B6E (Core Slate Blue) and its lighter/darker shades of blue (no blacks, no purples) */
+  --color-navy-950: #1b263b; /* Deep slate blue */
+  --color-navy-900: #25334c; /* Dark slate blue */
+  --color-navy-800: #384B6E; /* Core Muted Slate Blue */
+  --color-navy-700: #475a7e; 
+  --color-navy-600: #5a6e92; 
+  --color-navy-550: #6b80a5; 
+  --color-navy-500: #7d92b8; 
+  --color-navy-400: #9cb1d4; 
+  --color-navy-300: #bdcae2; /* Calm border gray-blue */
+  --color-navy-200: #dae1ee; 
+  --color-navy-100: #eceff5; /* Light soft gray-blue box bg */
+  --color-navy-50:  #f5f8fc; /* Beautiful light off-white whitespace */
+
+  /* ORANGE (Accent action) classes: mapped to #2196F3 (Vivid Blue) and its variants, completely removing #F35151 red */
+  --color-orange-950: #0a2e4b;
+  --color-orange-900: #103c61;
+  --color-orange-850: #154e7c;
+  --color-orange-800: #1a5f97;
+  --color-orange-700: #1f71b2;
+  --color-orange-600: #2196F3; /* Core Vibrant Button / Highlight Blue */
+  --color-orange-555: #3ea4f5;
+  --color-orange-550: #49adf6;
+  --color-orange-500: #60b7f7;
+  --color-orange-400: #85c9f9;
+  --color-orange-300: #abdaf1;
+  --color-orange-200: #d1ecfe;
+  --color-orange-100: #e7f5ff;
+  --color-orange-55:  #f2f9ff;
+  --color-orange-50:  #f8fcff;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-navy-50);
+  color: var(--color-navy-800);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Global Heading base color style - can be overridden by Tailwind utility classes */
+h1:not(.text-white), h2:not(.text-white), h3:not(.text-white), h4:not(.text-white), h5:not(.text-white), h6:not(.text-white) {
+  color: #384B6E;
+}
+
+/* Base style for spans inside headings for key accents using the vivid blue #2196F3 */
+h1 span, h2 span, h3 span, h4 span,
+h1 .text-orange-600, h1 .text-orange-500,
+h2 .text-orange-600, h2 .text-orange-500,
+h3 .text-orange-600, h3 .text-orange-500,
+h4 .text-orange-600, h4 .text-orange-500 {
+  color: #2196F3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+

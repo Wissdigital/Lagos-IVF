@@ -1,0 +1,6 @@
+{
+  "name": "Lagos IVF Specialist Clinic",
+  "description": "Lagos IVF Specialist Clinic is the premier fertility clinic in Lagos, Nigeria, offering top-tier services like IVF, ICSI, sex selection, surrogacy, and egg/sperm donation with world-class success rates.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
